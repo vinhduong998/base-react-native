@@ -1,118 +1,127 @@
+import React, {useEffect} from 'react';
+
+import WrapActionSheetView from 'components/ActionSheet/WrapActionSheetView';
+import WrapAlertView from 'components/Alert/WrapAlertView';
+import {GlobalPopupApp} from 'components/GlobalComponent/popup.globalComponent';
+import WrapDropdown from 'components/DropdownAlert/wrapDropdown';
+import getStore, {persistor} from 'configs/store.config';
+import {setUpNotification,} from 'helpers/firebase.helper';
+import {GlobalPopupHelper} from 'helpers/index';
+import AppNavigation from 'navigation/index';
+import {StyleSheet,} from 'react-native';
+import DisconnectNetworkScreen from 'components/Modals/disconectNetwork.modal';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {withIAPContext} from 'react-native-iap';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {logEventAnalytics} from "helpers/system.helper";
+import CodePush from 'react-native-code-push';
+import {checkUpdateFromStore} from "helpers/inAppUpdate.helper";
+import {EnumAnalyticEvent} from "constants/analytics.constant";
+// import OpenAppAdmob from "components/Admob/OpenAppAdmob";
+// import RewardAdmob from "components/Admob/RewardAdmob";
+// import OpenAppAds from 'components/OpenAppAds/open.app.ads';
+// import { createDB } from 'helpers/sqlite.helper';
+// import { Settings } from 'react-native-fbsdk-next';
+// import AdsReward from 'components/Ads/ads.reward';
+// import AlertViewAds from 'components/Alert/AlertViewAds';
+// import appsFlyer from 'react-native-appsflyer';
+
+
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
+ * Cài đặt FB SDK
  */
+// Settings.setAppID("530536282528491")
+// Settings.initializeSDK();
+// Settings.setAdvertiserTrackingEnabled(true)
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+/**
+ * Cài đặt appflyer
+ */
+// appsFlyer.initSdk(
+//     {
+//         devKey: "gMpXXJUTaB3u2fqGQ2EAFo",
+//         isDebug: false,
+//         appId: APP_ID_IOS,
+//         onInstallConversionDataListener: true, //Optional
+//         onDeepLinkListener: true, //Optional
+//         timeToWaitForATTUserAuthorization: 10 //for iOS 14.5
+//     },
+//     (result) => {
+//         console.log(result);
+//     },
+//     (error) => {
+//         console.log("error", error);
+//     }
+// );
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const store = getStore();
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+const App = () => {
+    useEffect(() => {
+        /**
+         * Log event mới vào app và check update
+         */
+        logEventAnalytics(EnumAnalyticEvent.Loading)
+        checkUpdateFromStore()
 
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+        /**
+         * App có SQLite
+         */
+        // createDB().catch((error) => console.log(error, "7nc94nc348"));
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+        /**
+         * App có notification
+         */
+        setUpNotification().catch(console.log)
+    }, [])
+
+
+    return (
+        <GestureHandlerRootView style={styles.container}>
+            <SafeAreaProvider>
+                <Provider store={store}>
+                    <PersistGate loading={null} persistor={persistor}>
+                        <AppNavigation/>
+
+                        {/*Loading hoặc progress*/}
+                        <GlobalPopupApp ref={GlobalPopupHelper.globalUIRef}/>
+
+                        {/*Toast màu sắc trên top*/}
+                        <WrapDropdown ref={GlobalPopupHelper.globalAlertRef}/>
+
+                        {/*Alert option có không*/}
+                        <WrapAlertView ref={GlobalPopupHelper.alertRef}/>
+
+                        {/*Option trượt từ dưới lên trên*/}
+                        <WrapActionSheetView ref={GlobalPopupHelper.actionSheetRef}/>
+
+                        {/*Modal mất mạng*/}
+                        <DisconnectNetworkScreen/>
+
+                        {/*Khi cần sử dụng admob*/}
+                        {/*<AlertViewAds ref={GlobalPopupHelper.alertAdsRef}/>*/}
+                        {/*<OpenAppAdmob ref={GlobalPopupHelper.admobGlobalRef}/>*/}
+                        {/*<RewardAdmob ref={GlobalPopupHelper.adsRewardRef}/>*/}
+                    </PersistGate>
+                </Provider>
+            </SafeAreaProvider>
+        </GestureHandlerRootView>
+    );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+    container: {
+        flex: 1
+    }
 });
 
-export default App;
+let codePushOptions = {
+    checkFrequency: CodePush.CheckFrequency.ON_APP_START,
+    installMode: CodePush.InstallMode.ON_NEXT_RESTART
+}
+
+export default CodePush(codePushOptions)(withIAPContext(App));

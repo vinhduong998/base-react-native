@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "536912109173",
+    "project_id": "ai-law-46d30",
+    "storage_bucket": "ai-law-46d30.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536912109173:android:6bc9436d5b3ef3e15a623c",
+        "android_client_info": {
+          "package_name": "com.iceo.base.ai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536912109173-j48kichjijpkjl471b4oeshj4nsg1h8r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr5obQVM3x8RBMKj6x_cdaXVwiNDqRpRM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "536912109173-j48kichjijpkjl471b4oeshj4nsg1h8r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
