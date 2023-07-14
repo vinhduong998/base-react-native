@@ -40,6 +40,12 @@
 				<string>iceo.law</string>
 			</array>
 		</dict>
+      <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>123</string>
+      </array>
+      </dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
@@ -120,5 +126,12 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+	    <key>FacebookAppID</key>
+        <string>123</string>
+        <key>FacebookClientToken</key>
+        <string>456</string>
+        <key>FacebookDisplayName</key>
+        <string>APP-NAME</string>
 </dict>
 </plist>

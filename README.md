@@ -9,7 +9,8 @@
 - let hoặc const object có thể sửa đổi viết danh từ camelCase (myObject)
 - enum là Enum..., giá trị viết PascalCace (EnumGender, EnumGender.Male)
 - biến hardcode viết hoa SNAKE_CASE (DATA_USER)
-- state bắt đầu là danh từ, camelCase ([name,setName])
+- biến yes/no bắt đầu bằng is... (isPremium)
+- state bắt đầu là camelCase ([name,setName])
 - hàm bắt đầu động tự, camelCase (getItem)
 - side effect bắt đầu bằng on... (onCallBack, onLoad)
 - ref bắt đầu bằng ref... (refList)
@@ -26,7 +27,42 @@
 - style cho icon là ic... (viewItem)
 - style cho ảnh là img... (imgAvatar)
 - style cho view phân cách là stroke... (strokeHeader)
+- style cho các component đặc biệt react-native bắt đầu bằng tên component đó (switchTheme, textInputEmail)
 ```
+
+
+##react-native-fbsdk-next
+###Android
+Thay đổi key trong xml và android manifest
+
+###IOS
+```angular2html
+//Info.plist
+<key>CFBundleURLTypes</key>
+<array>
+<dict>
+<key>CFBundleURLSchemes</key>
+<array>
+<string>fbAPP-ID</string>
+</array>
+</dict>
+</array>
+<key>FacebookAppID</key>
+<string>APP-ID</string>
+<key>FacebookClientToken</key>
+<string>CLIENT-TOKEN</string>
+<key>FacebookDisplayName</key>
+<string>APP-NAME</string>
+
+
+<key>LSApplicationQueriesSchemes</key>
+<array>
+  <string>fbapi</string>
+  <string>fb-messenger-share-api</string>
+</array>
+```
+Setup các bước đi kèm trong https://github.com/thebergamo/react-native-fbsdk-next#installation
+
 
 
 ##@gorhom/bottom-sheet

@@ -107,8 +107,18 @@ export interface TypedPlan {
     _id: string
 }
 
-export interface TypedLoginWithGoogleAccount {
-    user_token: string | null;
+export interface TypedLoginSSOParams {
+    access_token: string | null;
+    device_uuid?: string;
+    device_type?: string;
+    device_signature?: string;
+    full_name?: string;
+}
+
+export interface TypedLoginEmailPasswordParams {
+    user_email: string;
+    password: string;
+    remember?: number;
     device_uuid?: string;
     device_type?: string;
     device_signature?: string;

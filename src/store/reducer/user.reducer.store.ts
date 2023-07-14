@@ -4,10 +4,15 @@ import {APP_URL} from "configs";
 import {serializeAxiosError} from "configs/reducer.config";
 import {getFCMToken} from "helpers/firebase.helper";
 import {cleanEntity} from "helpers/object.helper";
-import {TypedLoginWithGoogleAccount, TypedPlan, TypedTransaction, TypedUser} from "models/user.model";
+import {
+    TypedLoginEmailPasswordParams,
+    TypedLoginSSOParams,
+    TypedPlan,
+    TypedTransaction,
+    TypedUser
+} from "models/user.model";
 import {Platform} from "react-native";
 import DeviceInfo from "react-native-device-info";
-import {resetIsPremiumTrial} from "./system.reducer.store";
 import {clearAllStorage} from "helpers/storage.helper";
 
 /**
@@ -64,7 +69,6 @@ export const logout = createAsyncThunk("user/logout", async ({callApi = true}: {
             // thunkAPI.dispatch(resetNotification());
             await axios.get(requestUrl);
         }
-        thunkAPI.dispatch(resetIsPremiumTrial())
         clearAllStorage()
     } catch (e) {
 
@@ -89,28 +93,47 @@ export const getListUserPrompt = createAsyncThunk(
     {serializeError: serializeAxiosError}
 );
 
-/**
- * JamDev: Login with google
- */
-
-export const loginWithGoogleAccount = createAsyncThunk(
-    "user/login/google",
-    async (entity: TypedLoginWithGoogleAccount, thunkAPI) => {
+export const loginWithEmailPassword = createAsyncThunk(
+    "user/loginWithEmailPassword",
+    async (entity: TypedLoginEmailPasswordParams, thunkAPI) => {
         entity.device_uuid = await DeviceInfo.getUniqueId();
         entity.device_signature = await getFCMToken();
         entity.device_type = Platform.OS;
-        return await axios.post<TypedUser>(`${APP_URL.APP_AJAX_URL}/user/login/google`, cleanEntity(entity));
+        entity.remember = 1;
+        return await axios.post<TypedUser>(APP_URL.LOGIN_GOOGLE, cleanEntity(entity));
+    },
+    {serializeError: serializeAxiosError}
+);
+
+export const loginWithGoogleAccount = createAsyncThunk(
+    "user/loginWithGoogleAccount",
+    async (entity: TypedLoginSSOParams, thunkAPI) => {
+        entity.device_uuid = await DeviceInfo.getUniqueId();
+        entity.device_signature = await getFCMToken();
+        entity.device_type = Platform.OS;
+        return await axios.post<TypedUser>(APP_URL.LOGIN_GOOGLE, cleanEntity(entity));
     },
     {serializeError: serializeAxiosError}
 );
 
 export const loginWithAppleAccount = createAsyncThunk(
+    "user/loginWithAppleAccount",
+    async (entity: TypedLoginSSOParams, thunkAPI) => {
+        entity.device_uuid = await DeviceInfo.getUniqueId();
+        entity.device_signature = await getFCMToken();
+        entity.device_type = Platform.OS;
+        return await axios.post<TypedUser>(APP_URL.LOGIN_APPLE, cleanEntity(entity))
+    },
+    {serializeError: serializeAxiosError}
+);
+
+export const loginWithFacebookAccount = createAsyncThunk(
     "user/login/apple",
     async (entity: any, thunkAPI) => {
         entity.device_uuid = await DeviceInfo.getUniqueId();
         entity.device_signature = await getFCMToken();
         entity.device_type = Platform.OS;
-        return await axios.post<TypedUser>(`${APP_URL.APP_AJAX_URL}/user/login/apple`, cleanEntity(entity))
+        return await axios.post<TypedUser>(APP_URL.LOGIN_FACEBOOK, cleanEntity(entity))
     },
     {serializeError: serializeAxiosError}
 );

@@ -2,16 +2,22 @@ import {useAppDispatch, useAppSelector} from "configs/store.config";
 import {GlobalPopupHelper} from "helpers/index";
 import {GoogleSignin, statusCodes} from "@react-native-google-signin/google-signin";
 import {IOS_CLIENT_ID_GOOGLE, WEB_CLIENT_ID_GOOGLE} from "constants/system.constant";
-import {loginWithAppleAccount, loginWithGoogleAccount} from "store/reducer/user.reducer.store";
+import {
+    loginWithAppleAccount,
+    loginWithFacebookAccount,
+    loginWithGoogleAccount
+} from "store/reducer/user.reducer.store";
 import {languages} from "../languages";
 import {Device} from "ui/device.ui";
 import appleAuth from "@invertase/react-native-apple-authentication";
+import {AccessToken, LoginManager} from "react-native-fbsdk-next";
+
 
 export const useLogin = () => {
     const dispatch = useAppDispatch();
     const isAuthenticated = useAppSelector(state => state.user.isAuthenticated);
 
-    const loginGoogle = async (onConfirmGet) => {
+    const loginGoogle = async (onConfirmGet?:Function) => {
         try {
             GlobalPopupHelper.showLoading(false);
             GoogleSignin.configure({
@@ -24,9 +30,9 @@ export const useLogin = () => {
             GlobalPopupHelper.admobGlobalRef.current?.setIgnoreOneTimeAppOpenAd();
             const {idToken} = await GoogleSignin.signIn();
             console.log("idToken", idToken);
-            const res: any = await dispatch(loginWithGoogleAccount({user_token: idToken}));
-            if (res.payload?.data) {
-                onConfirmGet();
+            const res: any = await dispatch(loginWithGoogleAccount({access_token: idToken}));
+            if (res.payload?.data && typeof onConfirmGet == 'function') {
+                onConfirmGet?.();
             }
             GlobalPopupHelper.hideLoading();
         } catch (error: any) {
@@ -43,7 +49,59 @@ export const useLogin = () => {
         }
     };
 
-    const loginApple = async (onConfirmGet) => {
+
+    const loginFacebook = async (onConfirmGet?:Function) => {
+        try {
+            GlobalPopupHelper.showLoading(false);
+            LoginManager.logInWithPermissions(["email", "public_profile", "user_friends"])
+                .then(({isCancelled}) => {
+                    if (!isCancelled) {
+                        AccessToken.getCurrentAccessToken().then(async (data: any) => {
+                            if (data.accessToken) {
+                                const res: any = await dispatch(loginWithFacebookAccount({
+                                    access_token: data.accessToken.toString()
+                                }));
+                                if (res.payload?.data && typeof onConfirmGet == 'function') {
+                                    onConfirmGet?.();
+                                }
+                            } else {
+                                GlobalPopupHelper.alert({
+                                    type: "error",
+                                    message: languages.somethingWentWrong
+                                });
+                            }
+                        }).catch((e) => {
+                            console.log('EEE AAAA');
+                        });
+                    }
+                })
+                .catch((error) => {
+                    GlobalPopupHelper.alert({
+                        type: "error",
+                        message: languages.somethingWentWrong
+                    });
+                    console.log(error, "error");
+                    // same here: **never called**
+                })
+                .finally(() => {
+                    GlobalPopupHelper.hideLoading();
+                });
+        } catch (error: any) {
+            GlobalPopupHelper.hideLoading();
+            console.log(JSON.stringify(error), "error");
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                //doToastError(trans("login_loginCanceled"));
+            } else {
+                GlobalPopupHelper.alert({
+                    type: "error",
+                    message: languages.somethingWentWrong
+                });
+            }
+        }
+    };
+
+
+    const loginApple = async (onConfirmGet?:Function) => {
         GlobalPopupHelper.showLoading();
         try {
             GlobalPopupHelper.admobGlobalRef.current?.setIgnoreOneTimeAppOpenAd();
@@ -60,12 +118,12 @@ export const useLogin = () => {
                 if (identityToken) {
                     // if user is authenticated dispatch to server
                     const res: any = await dispatch(loginWithAppleAccount({
-                        user_token: identityToken,
+                        access_token: identityToken,
                         full_name: fullName?.nickname || `${fullName?.givenName || ""} ${fullName?.familyName || ""}`.trim()
                     }));
                     GlobalPopupHelper.hideLoading();
-                    if (res.payload.data) {
-                        onConfirmGet();
+                    if (res.payload.data && typeof onConfirmGet === 'function') {
+                        onConfirmGet?.();
                     }
                 } else {
                     GlobalPopupHelper.hideLoading();
@@ -116,5 +174,5 @@ export const useLogin = () => {
     };
 
 
-    return {loginGoogle, loginApple, checkRole};
+    return {loginGoogle, loginApple, loginFacebook, checkRole};
 };

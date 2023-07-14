@@ -47,9 +47,9 @@ export let APP_URL = {
     env: ENVIRONMENT === ENV.PRODUCTION ? 'product' : 'develop', // or production
     APP_API_REQUEST_TIMEOUT: 15, // in second, NOT microseconds
     APP_AJAX_URL: INIT_RUNTIME_DOMAIN_API + '',
-    APP_UPLOAD_MEDIA: INIT_RUNTIME_DOMAIN_MEDIA + '/upload-media' + `?callback=${DEVELOPER_DOMAIN}/api/chat-media/create`,
-    APP_CHAT_MEDIA: INIT_RUNTIME_DOMAIN_CHAT_API + "/chat-media",
-    VUE_APP_URL_CHAT_SOCKET: INIT_RUNTIME_DOMAIN_SOCKET + '/socket',
+    LOGIN_APPLE:INIT_RUNTIME_DOMAIN_API+"/login/apple",
+    LOGIN_GOOGLE:INIT_RUNTIME_DOMAIN_API+"/login/google",
+    LOGIN_FACEBOOK:INIT_RUNTIME_DOMAIN_API+"/login/facebook",
 
     APP_CHAT_ROOT: INIT_RUNTIME_DOMAIN_CHAT,
     TERM: TERM_URL,
@@ -67,9 +67,9 @@ export function setUrlEnv(isProduction: boolean) {
         env: isProduction ? 'product' : 'develop', // or production
         APP_API_REQUEST_TIMEOUT: 15, // in second, NOT microseconds
         APP_AJAX_URL: RUNTIME_DOMAIN_API + '',
-        APP_UPLOAD_MEDIA: RUNTIME_DOMAIN_MEDIA + '/upload-media' + `?callback=${DEVELOPER_DOMAIN}/api/chat-media/create`,
-        APP_CHAT_MEDIA: RUNTIME_DOMAIN_CHAT_API + "/chat-media",
-        VUE_APP_URL_CHAT_SOCKET: RUNTIME_DOMAIN_SOCKET + '/socket',
+        LOGIN_APPLE:INIT_RUNTIME_DOMAIN_API+"/login/apple",
+        LOGIN_GOOGLE:INIT_RUNTIME_DOMAIN_API+"/login/google",
+        LOGIN_FACEBOOK:INIT_RUNTIME_DOMAIN_API+"/login/facebook",
 
         APP_CHAT_ROOT: RUNTIME_DOMAIN_CHAT,
         TERM: TERM_URL,
