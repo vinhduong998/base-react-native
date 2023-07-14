@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">@string/APP_NAME</string>
-    <string name="deep_link">@string/DEEP_LINK</string>
+    <string name="app_name">App name</string>
+    <string name="deep_link">base.iceo</string>
     <string name="CodePushDeploymentKey">@string/CODE_PUSH_ANDROID_KEY</string>
 </resources>

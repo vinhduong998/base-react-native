@@ -1,5 +1,34 @@
 #0.71.4
 
+##Quy tắc
+###Tên
+####Biến, hàm
+```angular2html
+- interface là Typed... (TypedUser)
+- interface prop là Typed...Props (TypedUserDetailProps)
+- let hoặc const object có thể sửa đổi viết danh từ camelCase (myObject)
+- enum là Enum..., giá trị viết PascalCace (EnumGender, EnumGender.Male)
+- biến hardcode viết hoa SNAKE_CASE (DATA_USER)
+- state bắt đầu là danh từ, camelCase ([name,setName])
+- hàm bắt đầu động tự, camelCase (getItem)
+- side effect bắt đầu bằng on... (onCallBack, onLoad)
+- ref bắt đầu bằng ref... (refList)
+- value re-animated bắt đầu bằng ani... (aniScrollX = useSharedValue(0);)
+- re-animated style bắt đầu bằng aniStyle... (const aniStyleColorName = useAnimatedStyle)
+```
+####Style
+```angular2html
+- style component bao cả file: container
+- style component bao nội dun phân biệt là container... (containerItem)
+- style cho nút là btn... (btnDelete)
+- style cho text là txt... (txtSkip)
+- style cho view là view... (viewItem)
+- style cho icon là ic... (viewItem)
+- style cho ảnh là img... (imgAvatar)
+- style cho view phân cách là stroke... (strokeHeader)
+```
+
+
 ##@gorhom/bottom-sheet
 - note
 ##@invertase/react-native-apple-authentication
