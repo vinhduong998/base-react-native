@@ -2,7 +2,7 @@ import {useAppSelector} from "configs/store.config";
 import {EnumTheme} from "constants/system.constant";
 import React, {memo} from "react";
 import isEqual from "react-fast-compare";
-import {mhs} from "ui/sizes.ui";
+import { FontSizes } from "ui/sizes.ui";
 
 import {StyleProp, Text, TextProps} from "react-native";
 
@@ -17,7 +17,7 @@ interface Props extends TextProps {
 }
 
 const TextBase = (props: Props) => {
-    const {style, title, children, numberOfLines, fontSize = 14, fontWeight = "400", textAlign = "left"} = props;
+    const {style, title, children, numberOfLines, fontSize = FontSizes._14, fontWeight = "400", textAlign = "left"} = props;
     const isBold = fontWeight == "600" || fontWeight == "700" || fontWeight == "900" || fontWeight == "bold"
     const theme = useAppSelector(state => state.system.theme)
     const color = props.color || (theme == EnumTheme.Dark ? "#F3F3F3" : "#474747");
@@ -39,7 +39,7 @@ const TextBase = (props: Props) => {
                 },
                 style,
                 {
-                    fontSize: mhs(style?.fontSize ? style?.fontSize : fontSize)
+                    fontSize: style?.fontSize ? style?.fontSize : fontSize
                 }
             ]}
         >

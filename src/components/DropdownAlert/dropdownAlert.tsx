@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Device } from "ui/device.ui";
 
 import TextBase from "components/Base/text.base";
-import { HIT_SLOP_EXPAND_20 } from "ui/sizes.ui";
+import {FontSizes, HIT_SLOP_EXPAND_20} from "ui/sizes.ui";
 
 export type DropdownType = "info" | "warning" | "success" | "error";
 
@@ -154,13 +154,13 @@ function DropdownAlertViewComponent(props: DropdownAlertViewProps, ref: React.Re
   const renderIcon = () => {
     switch (type) {
       case "info":
-        return <IconInfo size={36} color={"white"} style={[styles.image, imageStyle]} />;
+        return <IconInfo size={FontSizes._18} color={"white"} style={[styles.image, imageStyle]} />;
       case "error":
-        return <IconDangerous size={36} color={"white"} style={[styles.image, imageStyle]} />;
+        return <IconDangerous size={FontSizes._18} color={"white"} style={[styles.image, imageStyle]} />;
       case "warning":
-        return <IconWarning size={36} color={"white"} style={[styles.image, imageStyle]} />;
+        return <IconWarning size={FontSizes._18} color={"white"} style={[styles.image, imageStyle]} />;
       default:
-        return <IconCheck size={36} color={"white"} style={[styles.image, imageStyle]} />;
+        return <IconCheck size={FontSizes._18} color={"white"} style={[styles.image, imageStyle]} />;
     }
   };
 

@@ -38,6 +38,7 @@ module.exports = (async () => {
       path.resolve(__dirname, './src/helpers'),
       path.resolve(__dirname, './src/models'),
       path.resolve(__dirname, './src/configs'),
+      path.resolve(__dirname, './src/services'),
       path.resolve(__dirname, './src/constants'),
     ],
     resolver: {

@@ -67,9 +67,9 @@ export function setUrlEnv(isProduction: boolean) {
         env: isProduction ? 'product' : 'develop', // or production
         APP_API_REQUEST_TIMEOUT: 15, // in second, NOT microseconds
         APP_AJAX_URL: RUNTIME_DOMAIN_API + '',
-        LOGIN_APPLE:INIT_RUNTIME_DOMAIN_API+"/login/apple",
-        LOGIN_GOOGLE:INIT_RUNTIME_DOMAIN_API+"/login/google",
-        LOGIN_FACEBOOK:INIT_RUNTIME_DOMAIN_API+"/login/facebook",
+        LOGIN_APPLE:RUNTIME_DOMAIN_API+"/login/apple",
+        LOGIN_GOOGLE:RUNTIME_DOMAIN_API+"/login/google",
+        LOGIN_FACEBOOK:RUNTIME_DOMAIN_API+"/login/facebook",
 
         APP_CHAT_ROOT: RUNTIME_DOMAIN_CHAT,
         TERM: TERM_URL,
